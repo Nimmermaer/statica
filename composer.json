@@ -1,0 +1,22 @@
+{
+    "name": "nimmermaer/statica",
+    "description": "Export tables to static sql dump to provider extension",
+    "type": "typo3-cms-extension",
+    "license": [
+        "GPL-2.0-or-later"
+    ],
+    "version": "0.0.1",
+    "require": {
+        "typo3/cms-core": "^13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nimmermaer\\Statica\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "statica"
+        }
+    }
+}
