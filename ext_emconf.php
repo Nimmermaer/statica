@@ -5,7 +5,7 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'Export tables to static sql dump to provider extension',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.0.0-13.4.99',
+            'typo3' => '13.4.0-13.4.99',
         ],
     ],
     'autoload' => [
