@@ -22,7 +22,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(public: true)]
 class SqlReader extends \TYPO3\CMS\Core\Database\Schema\SqlReader
 {
-
     /**
      * Returns an array where every entry is a single SQL-statement.
      * Input must be formatted like an ordinary MySQL dump file. Every statements needs to be terminated by a ';'
@@ -40,10 +39,10 @@ class SqlReader extends \TYPO3\CMS\Core\Database\Schema\SqlReader
         foreach (explode(LF, $dumpContent) as $lineContent) {
             $lineContent = trim($lineContent);
             // Skip empty lines and comments
-            $isRealCommentStart = str_starts_with($lineContent, '/*') && !str_starts_with($lineContent, '/*!');
-            $isRealCommentEnd   = str_ends_with($lineContent, '*/') && !str_starts_with($lineContent, '/*!');
+            $isRealCommentStart = str_starts_with($lineContent, '/*') && ! str_starts_with($lineContent, '/*!');
+            $isRealCommentEnd = str_ends_with($lineContent, '*/') && ! str_starts_with($lineContent, '/*!');
 
-            if (     $lineContent === ''
+            if ($lineContent === ''
                 || $lineContent[0] === '#'
                 || str_starts_with($lineContent, '--')
                 || $isRealCommentStart
@@ -51,7 +50,7 @@ class SqlReader extends \TYPO3\CMS\Core\Database\Schema\SqlReader
                 || $isRealCommentEnd
             ) {
 
-                if ($isRealCommentStart && !$isRealCommentEnd) {
+                if ($isRealCommentStart && ! $isRealCommentEnd) {
                     $isInMultilineComment = true;
                 }
 
@@ -62,10 +61,9 @@ class SqlReader extends \TYPO3\CMS\Core\Database\Schema\SqlReader
             }
             $statementArray[$statementArrayPointer] = ($statementArray[$statementArrayPointer] ?? '') . $lineContent;
 
-
             if (str_ends_with($lineContent, ';')) {
                 $statement = trim($statementArray[$statementArrayPointer]);
-                if (!$statement || ($queryRegex && !preg_match('/' . $queryRegex . '/i', $statement))) {
+                if (! $statement || ($queryRegex && ! preg_match('/' . $queryRegex . '/i', $statement))) {
                     unset($statementArray[$statementArrayPointer]);
                 }
                 $statementArrayPointer++;

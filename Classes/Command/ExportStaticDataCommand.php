@@ -18,7 +18,6 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 )]
 class ExportStaticDataCommand extends Command
 {
-
     protected function configure(): void
     {
         $this->setDescription('Export table dump');
@@ -54,7 +53,7 @@ class ExportStaticDataCommand extends Command
 
         $outputFile = $extPath . 'ext_tables_static+adt.sql';
 
-        if (!is_dir(dirname($outputFile))) {
+        if (! is_dir(dirname($outputFile))) {
             mkdir(dirname($outputFile), 0775, true);
         }
 
@@ -66,7 +65,7 @@ class ExportStaticDataCommand extends Command
         $password = $db['password'] ?? '';
         $dbname = $db['dbname'] ?? '';
 
-        if (!$user || !$dbname) {
+        if (! $user || ! $dbname) {
             $output->writeln('<error>Database configuration invalid.</error>');
             return Command::FAILURE;
         }
@@ -99,7 +98,7 @@ class ExportStaticDataCommand extends Command
                 $pipes
             );
 
-            if (!\is_resource($process)) {
+            if (! \is_resource($process)) {
                 $output->writeln("<error>Could not run mysqldump for table {$table}</error>");
                 return Command::FAILURE;
             }
@@ -125,5 +124,4 @@ class ExportStaticDataCommand extends Command
 
         return Command::SUCCESS;
     }
-
 }

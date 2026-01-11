@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Nimmermaer\Statica\EventListener;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
@@ -9,14 +11,13 @@ use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
-final class PackageInitializationEventListener
+final readonly class PackageInitializationEventListener
 {
     public function __construct(
-        protected Registry $registry,
-        protected SqlReader $sqlReader,
-        protected SchemaMigrator $schemaMigrator
-    )
-    {
+        private Registry $registry,
+        private SqlReader $sqlReader,
+        private SchemaMigrator $schemaMigrator
+    ) {
     }
 
     #[AsEventListener(
@@ -29,12 +30,12 @@ final class PackageInitializationEventListener
         $extTablesStaticSqlRelFile = PathUtility::stripPathSitePrefix($extTablesStaticSqlFile);
         $currentFileHash = '';
         if (file_exists($extTablesStaticSqlFile)) {
-                $extTablesStaticSqlContent = (string)file_get_contents($extTablesStaticSqlFile);
-                $statements = $this->sqlReader->getStatementArray($extTablesStaticSqlContent);
+            $extTablesStaticSqlContent = (string) file_get_contents($extTablesStaticSqlFile);
+            $statements = $this->sqlReader->getStatementArray($extTablesStaticSqlContent);
 
-                $this->schemaMigrator->importStaticData($statements, true);
-                $this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, $currentFileHash);
-                $event->addStorageEntry(self::class, $extTablesStaticSqlFile);
+            $this->schemaMigrator->importStaticData($statements, true);
+            $this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, $currentFileHash);
+            $event->addStorageEntry(self::class, $extTablesStaticSqlFile);
         }
     }
 }
